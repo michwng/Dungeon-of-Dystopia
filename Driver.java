@@ -7,8 +7,8 @@
  * Course: CSCI 1250-942
  * Creation Date: 10/8/2020
  * Completion Date: 11/16/2020
- * Updated: 09/01/2021 - 09/06/2021
- * @version 1.5
+ * Updated: 09/01/2021 - 09/06/2021, 11/15/2023.
+ * @version 1.7
  * --------------------------------------------------------------------------
  */
 //imports needed in order to play background music.
@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -593,9 +595,9 @@ public class Driver
      * Opens the shopping menu. Allows the user to buy a selection of goods.
      * 
      * Date Created: October 11, 2020
-     * 
+     * Last Updated: November 15, 2023
      */
-    public static void openShop(Statistics heroStats)
+    public static void openShop()
     {
         //moneyAvailable gets the hero's total amount of money.
         boolean completePurchases = false;
@@ -603,153 +605,330 @@ public class Driver
         do
         {
             String[] choices = {"MaxHP", "Constitution", "Affinity", "Armor Mod", "Resistance", "Speed", "Leave"};
-            int pick = JOptionPane.showOptionDialog(null, "Welcome to the Shop! What will you buy?\nYou have: $" + heroStats.getMoney() + "\n\nMaxHP Potion: $100 \n - A MaxHP Potion raises the Hero's Max HP by 20.\n\nConstitution Training: $100 \n - Constitution Training raises the Hero's Constitution by 4.\n\nAffinity Honing: $100\n - Affinity Honing raises the Hero's Affinity by 4.\n\nArmor Mod: $100\n - An Armor Modification raises the Hero's Armor by 4. \n\nResistance Training: $100\n - Resistance Training raises the Hero's Resistance by 4.\n\nSpeed Training: $100\n - Speed Training raises the Hero's Speed by 4.\n\n", "Shop", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choices, choices[0]);
+            int pick = JOptionPane.showOptionDialog(null, "Welcome to the Shop! What will you buy?\nYou have: $" + stats.getMoney() + "\n\nMaxHP Potion: $100 \n - A MaxHP Potion raises the Hero's Max HP by 20.\n\nConstitution Training: $100 \n - Constitution Training raises the Hero's Constitution by 4.\n\nAffinity Honing: $100\n - Affinity Honing raises the Hero's Affinity by 4.\n\nArmor Mod: $100\n - An Armor Modification raises the Hero's Armor by 4. \n\nResistance Training: $100\n - Resistance Training raises the Hero's Resistance by 4.\n\nSpeed Training: $100\n - Speed Training raises the Hero's Speed by 4.\n\n", "Shop", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choices, choices[0]);
 
-            
+            ArrayList<String> confirmationOptions = new ArrayList<String>();
+                confirmationOptions.add("Yes");
+                confirmationOptions.add("Buy for Zacharias");
             //Used for button options in the shop class.
-            String[] confirmationOptions = {"Yes", "No"};
+            if(anthiera == null) //if Anthiera is not in the party.
+            {
+                //Regular Arraylist.
+                confirmationOptions.add("No");
+            }
+            else //Anthiera is a member of the party.
+            {
+                //include the option to buy for Anthiera.
+                confirmationOptions.add("Buy for Anthiera");
+                confirmationOptions.add("No");
+                //Arraylist with the Buy for Anthiera Option.
+            }
 
+            String[] YesNoOption = {"Yes", "No"};
             //Buying a MaxHP Potion
             if(pick == 0)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy a MaxHP Potion?\nYour Money: $" + heroStats.getMoney() + "\nYour Max HP: " + heroStats.getMaxHP(), "Buy MaxHP Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addMaxHP(20);
-                    heroStats.setHP(heroStats.getMaxHP());
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Max HP: " + heroStats.getMaxHP() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy a MaxHP Potion? (+20HP)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Max HP: " + stats.getMaxHP() +
+                                "\nZacharias's Max HP: " + zacharias.getMaxHP();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy a MaxHP Potion? (+20HP)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Max HP: " + stats.getMaxHP() +
+                                "\nZacharias's Max HP: " + zacharias.getMaxHP() +
+                                "\nAnthiera's Max HP: " + anthiera.getMaxHP();
                 }
-                else if(choice == 1)
+
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy MaxHP Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addMaxHP(20);
+                    stats.setHP(stats.getMaxHP());
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Max HP: " + stats.getMaxHP() + "\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addMaxHP(20);
+                    zacharias.setHP(zacharias.getMaxHP());
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the potion for him.\nZacharias's Max HP: " + zacharias.getMaxHP(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addMaxHP(20);
+                    anthiera.setHP(anthiera.getMaxHP());
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the potion for her.\nAnthiera's Max HP: " + anthiera.getMaxHP(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
 
             //Buying a Constitution Potion
             if(pick == 1)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy a Constitution Potion?\nYour Money: $" + heroStats.getMoney() + "\nYour Constitution: " + heroStats.getConstitution(), "Buy Constitution Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addConstitution(4);
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Constitution: " + heroStats.getConstitution() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy a Constitution Potion? (+4 Constitution)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Constitution: " + stats.getConstitution() +
+                                "\nZacharias's Constitution: " + zacharias.getConstitution();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy a Constitution Potion? (+4 Constitution)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Constitution: " + stats.getConstitution() +
+                                "\nZacharias's Constitution: " + zacharias.getConstitution() +
+                                "\nAnthiera's Constitution: " + anthiera.getConstitution();
                 }
-                else if(choice == 1)
+                
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy Constitution Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addConstitution(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Constitution: " + stats.getConstitution(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addConstitution(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the potion for him.\nZacharias's Constitution: " + zacharias.getConstitution(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addConstitution(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the potion for her.\nAnthiera's Constitution: " + anthiera.getConstitution(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
 
             //Buying an Affinity Potion
             if(pick == 2)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy an Affinity Potion?\nYour Money: $" + heroStats.getMoney() + "\nYour Affinity: " + heroStats.getAffinity(), "Buy Affinity Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addAffinity(4);
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Affinity: " + heroStats.getAffinity() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy an Affinity Potion? (+4 Affinity)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Affinity: " + stats.getAffinity() +
+                                "\nZacharias's Affinity: " + zacharias.getAffinity();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy an Affinity Potion? (+4 Affinity)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Affinity: " + stats.getAffinity() +
+                                "\nZacharias's Affinity: " + zacharias.getAffinity() +
+                                "\nAnthiera's Affinity: " + anthiera.getAffinity();
                 }
-                else if(choice == 1)
+                
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy Affinity Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addAffinity(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Affinity: " + stats.getAffinity(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addAffinity(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the potion for him.\nZacharias's Affinity: " + zacharias.getAffinity(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addAffinity(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the potion for her.\nAnthiera's Affinity: " + anthiera.getAffinity(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
 
             //Buying an Armor Potion
             if(pick == 3)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy an Armor Modification?\nYour Money: $" + heroStats.getMoney() + "\nYour Armor: " + heroStats.getArmor(), "Buy Armor Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addArmor(4);
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Armor: " + heroStats.getArmor() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy an Armor Modification? (+4 Armor)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Armor: " + stats.getArmor() +
+                                "\nZacharias's Armor: " + zacharias.getArmor();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy an Armor Modification? (+4 Armor)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Armor: " + stats.getArmor() +
+                                "\nZacharias's Armor: " + zacharias.getArmor() +
+                                "\nAnthiera's Armor: " + anthiera.getArmor();
                 }
-                else if(choice == 1)
+                
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy Armor Modification", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addArmor(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Armor: " + stats.getArmor(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addArmor(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the Armor Modification for him.\nZacharias's Armor: " + zacharias.getArmor(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addArmor(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the Armor Modification for her.\nAnthiera's Armor: " + anthiera.getArmor(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
-
             //Buying a Resistance Potion
             if(pick == 4)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy a Resistance Training Session?\nYour Money: $" + heroStats.getMoney() + "\nYour Resistance: " + heroStats.getResistance(), "Buy Resistance Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addResistance(4);
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Resistance: " + heroStats.getResistance() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy a Resistance Potion? (+4 Resistance)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Resistance: " + stats.getResistance() +
+                                "\nZacharias's Resistance: " + zacharias.getResistance();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy a Resistance Potion? (+4 Resistance)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Resistance: " + stats.getResistance() +
+                                "\nZacharias's Resistance: " + zacharias.getResistance() +
+                                "\nAnthiera's Resistance: " + anthiera.getResistance();
                 }
-                else if(choice == 1)
+                
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy Resistance Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addResistance(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Resistance: " + stats.getResistance(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addResistance(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the potion for him.\nZacharias's Resistance: " + zacharias.getResistance(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addResistance(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the potion for her.\nAnthiera's Resistance: " + anthiera.getResistance(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
             //Buying a Speed Potion
             if(pick == 5)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to buy a Speed Training Session?\nYour Money: $" + heroStats.getMoney() + "\nYour Speed: " + heroStats.getSpeed(), "Buy Speed Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
-                if(choice == 0 && heroStats.getMoney() >= 100)
+                String message;
+                if(anthiera == null) //Anthiera is not in the party.
                 {
-                    heroStats.addSpeed(4);
-                    heroStats.addMoney(-100);
-                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Speed: " + heroStats.getSpeed() + "\nReturning to the Shopping Command Console...\n", "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                    message = "Are you sure you want to buy a Speed Potion? (+4 Speed)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Speed: " + stats.getSpeed() +
+                                "\nZacharias's Speed: " + zacharias.getSpeed();
                 }
-                else if(choice == 0 && heroStats.getMoney() < 100)
+                else 
                 {
-                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + heroStats.getMoney() + " out of the $100. \nReturning to the Shopping Command Console...\n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                    message = "Are you sure you want to buy a Speed Potion? (+4 Speed)\nYour Money: $" + stats.getMoney() + 
+                                "\nYour Speed: " + stats.getSpeed() +
+                                "\nZacharias's Speed: " + zacharias.getSpeed() +
+                                "\nAnthiera's Speed: " + anthiera.getSpeed();
                 }
-                else if(choice == 1)
+                
+                int choice = JOptionPane.showOptionDialog(null, message, "Buy Speed Potion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions.toArray(), confirmationOptions.get(0));
+                if(stats.getMoney() < 100 && !(choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //You didn't have enough money and chose any option except "No".
                 {
-                    JOptionPane.showMessageDialog(null, "Returning to the Shopping Command Console...", "Returning to Shop", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sorry! You do not have enough money. You only have $" + stats.getMoney() + " out of the $100. \n", "Not Enough Money", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(choice == 0) //You chose "Yes", buying the potion for yourself.
+                {
+                    stats.addSpeed(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Thank you for your purchase!\nYour Affinity: " + stats.getSpeed(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 1) //You chose "Buy for Zacharias".
+                {
+                    zacharias.addSpeed(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Zacharias thanks you for buying the potion for him.\nZacharias's Speed: " + zacharias.getSpeed(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(choice == 2 && anthiera != null) //We choose "Buy for Anthiera", knowing that it is in the list of options.
+                {
+                    anthiera.addSpeed(4);
+                    stats.addMoney(-100);
+                    JOptionPane.showMessageDialog(null, "Anthiera thanks you for buying the potion for her.\nAnthiera's Speed: " + anthiera.getSpeed(), "Thank you!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if((choice == 2 && anthiera == null) || (choice == 3 && anthiera != null)) //We choose "No". The left side uses the list of options not including the option to buy for Anthiera. The right side includes that option.
+                {
+                    //Do nothing and go back.
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Invalid input. Returning to the Shopping Command Console...", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    //Also do nothing and go back.
                 }
             }
             //End of Shopping Potions
@@ -757,7 +936,7 @@ public class Driver
             //Used to Leave the Shop.
             if(pick == 6)
             {
-                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to leave the shop?", "Leave Shop", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, confirmationOptions, confirmationOptions[0]);
+                int choice = JOptionPane.showOptionDialog(null, "Are you sure you want to leave the shop?", "Leave Shop", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, YesNoOption, YesNoOption[0]);
                 if(choice == 0)
                 {
                     JOptionPane.showMessageDialog(null, "Thank you for your time! Returning to the Dungeon...\n" , "Returning to Dungeon", JOptionPane.INFORMATION_MESSAGE);
@@ -1245,7 +1424,7 @@ public class Driver
                     break;
                 //Open Shop - Opens the shop menu.
                 case 1:
-                    openShop(stats);
+                    openShop();
                     break;
                 //Ally - returns the current Ally's stats.
                 case 2:

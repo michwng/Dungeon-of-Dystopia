@@ -131,9 +131,10 @@ Music Credits go to these following video games:
 
 
 ** UPDATE LOG **
-Version 1: Original Project with base game. Submitted 11/23/2020
+Version 1: Original Project with base game. <<<Submitted 11/23/2020>>>
 
-Version 1.5 (Anniversary Update): 
+
+Version 1.5 (Anniversary Update) <<<Submitted 10/05/2021>>>: 
 - Added Save/Load mechanic. 
 - Added 5 new strong bosses in the post-game.
 - Command Console has been changed.
@@ -152,9 +153,23 @@ Version 1.5 (Anniversary Update):
 	- Similarly, the Poison status effect had the same bug as Bleed, and this issue has also been fixed.
 	- Fixed display bug where, when enemy bleeds, output shows Ally's Max HP instead of Enemy's Max HP.
 	
-Submitted 10/05/2021
 
 
+
+Version 1.7 <<<Submitted 11/15/2023>>>:
+- (Update): You can buy potions for your allies! Increase their stats as you see fit - as long as you have the money!
+- (Display Fix) During Battle, the Status Effects menu will now display Proper Names instead of "Hero, Enemy, and Ally".
+- (Large Patch): Draining HP was not working prior to this update. After this update, skills utilizing Drain are now working!
+
+(MISC Bug Fixes)
+- Fixed some grammatical and formatting issues when displaying Battle Phase messages.
+- Fixed an issue where fighting Burny Sandles will continue to play Background Music when fighting him. Fixed to remove the background music. 
+- Fixed an issue where Bill Nye's poison skill description removes 20HP per turn. However, the skill actually removes 5HP per turn. Updated the skill to remove 20HP per turn.
+- Fixed a bug where, when a enemy recovers from a status effect, you might see a message saying "[Enemy] has recovered from being Healthy." This bug has been fixed to adequately show the correct status effect that the enemy was ailed by.
+- Fixed a bug where, when an ally recovers from a status effect, you might see a message saying "[Ally] has recovered from being Healthy." This bug has been fixed to adequately show the correct status effect that the ally was ailed by.
+- After an enemy phase where the enemy was stunned, you may see a string saying "Enemy was stunned this round. They cannot act this turn. Enemy has recovered from being stunned." This has been fixed to say "[Enemy] will be able to act in their next turn". 
+- When an enemy is suffering from bleeding/poison and recover from it, it will say on that turn that "[Enemy] took 0HP of damage from Bleeding". This is been fixed to say the correct amount of damage done via poison/bleeding. This has also been fixed for the Hero and Ally.
+- Leader of the Legion's "Decimate" skill renamed to "Execute".
 
 
 

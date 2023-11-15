@@ -286,7 +286,7 @@ public class Enemy
             enemySkills[1] = "Vaccuum";
             enemySkillDescriptions[0] = "Vile Vial: Bill Nye will throw a vial of acid. 70% Chance to poison the target and deal 20HP damage every turn for 3 turns. Deals damage equal to Enemy Affinity * 0.7.";
             enemySkillDescriptions[1] = "Vaccuum: Bill Nye gained the Vampire Ability 'Succ' with Science! Too bad it doesn't heal. Deals damage equal to Enemy Affinity * 1.5.";
-            skillStatusEffect[0] = "70 Poison 5 3";
+            skillStatusEffect[0] = "70 Poison 20 3";
             skillStatusEffect[1] = "0 None 0 0";
             enemySkillDamage[0] = (int) (enemyConstitution * 0.7);
             enemySkillDamage[1] = enemyAffinity;
@@ -408,7 +408,7 @@ public class Enemy
             enemySkills[0] = "Tickle";
             enemySkills[1] = "Burrow";
             enemySkillDescriptions[0] = "Tickle: The Cockroach crawls on the target, tickling them. 40% chance to Pacify the target for 2 turns.";
-            enemySkillDescriptions[1] = "Burrow: The Cockroach attempt to burrow and act as a parasite to the target. Deals damage equal to enemy Consitution and drains HP equal to 100% damage done.";
+            enemySkillDescriptions[1] = "Burrow: The Cockroach attempt to burrow into the target. Deals damage equal to enemy Consitution and drains HP equal to 100% damage done.";
             skillStatusEffect[0] = "40 Pacify 0 2";
             skillStatusEffect[1] = "100 Drain 0 0";
             enemySkillDamage[0] = 0;
@@ -962,9 +962,9 @@ public class Enemy
             balanceDifficulty();
             
             enemySkills[0] = "Savage Impale";
-            enemySkills[1] = "Decimate";
+            enemySkills[1] = "Execute";
             enemySkillDescriptions[0] = "Savage Impale: Charge the target, impaling them with Thyrfig. Deals damage equal to Constitution and has a 100% chance to bleed the target for 20HP every turn for 3 turns.";
-            enemySkillDescriptions[1] = "Decimate: Brings down Thyrfig upon the target with great might, much like an excecutioner's. Deals damage equal to Constitution with a 40% chance to Sunder the target, reducing their armor to 0 for 3 turns.";
+            enemySkillDescriptions[1] = "Execute: Brings down Thyrfig upon the target with great might, like an executioner. Deals damage equal to Constitution with a 40% chance to Sunder the target, reducing their armor to 0 for 3 turns.";
             //This formatting represents: Proc Chance, Status Effect, Efficacy, Effect Duration
             skillStatusEffect[0] = "100 Bleed 20 3";
             skillStatusEffect[1] = "40 Sunder 20 3";

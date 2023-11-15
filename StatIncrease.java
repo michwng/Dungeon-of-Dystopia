@@ -84,7 +84,7 @@ public class StatIncrease
     {
         if (heroClass.equalsIgnoreCase("Mage"))
         {
-            chanceMaxHP = 60;
+            chanceMaxHP = 80;
             chanceConstitution = 15;
             chanceAffinity = 80;
             chanceArmor = 50;
@@ -114,12 +114,12 @@ public class StatIncrease
             chanceResistance = 60;
             chanceSpeed = 50;
 
-            allyChanceMaxHP = 50;
+            allyChanceMaxHP = 90;
             allyChanceConstitution = 0;
-            allyChanceAffinity = 80;
-            allyChanceArmor = 50;
-            allyChanceResistance = 60;
-            allyChanceSpeed = 70;
+            allyChanceAffinity = 100;
+            allyChanceArmor = 90;
+            allyChanceResistance = 90;
+            allyChanceSpeed = 0;
 
             ally2ChanceMaxHP = 100;
             ally2ChanceConstitution = 85;
@@ -146,7 +146,7 @@ public class StatIncrease
      */
     public StatIncrease(Statistics stats, String heroClass, Skills heroSkills, Ally ally, int heroXP, int heroLevel)
     {
-        if (heroClass.equalsIgnoreCase("Mage"))
+        if (heroClass.equalsIgnoreCase("Mage")) //If you chose your hero to be a mage.
         {
             chanceMaxHP = 60;
             chanceConstitution = 15;
@@ -169,7 +169,7 @@ public class StatIncrease
             ally2ChanceResistance = 50;
             ally2ChanceSpeed = 70;
         } 
-        else // if(class.equalsIgnoreCase("Warrior"))
+        else // if you chose your hero to be a warrior.
         {
             chanceMaxHP = 100;
             chanceConstitution = 90;
@@ -178,12 +178,12 @@ public class StatIncrease
             chanceResistance = 60;
             chanceSpeed = 50;
 
-            allyChanceMaxHP = 50;
+            allyChanceMaxHP = 90;
             allyChanceConstitution = 0;
-            allyChanceAffinity = 80;
-            allyChanceArmor = 50;
-            allyChanceResistance = 60;
-            allyChanceSpeed = 70;
+            allyChanceAffinity = 100;
+            allyChanceArmor = 90;
+            allyChanceResistance = 90;
+            allyChanceSpeed = 0;
 
             ally2ChanceMaxHP = 100;
             ally2ChanceConstitution = 85;
@@ -230,7 +230,7 @@ public class StatIncrease
             SAP = new SimpleAudioPlayer("17.LevelUp-FireEmblemEchoes-Fanfare(Recruitment).wav", false);
             heroLevel++;
             Random rand = new Random();
-            int randomNum = rand.nextInt(2) + 1;
+            int randomNum;
             String allIncreases = stats.getHeroName() + " leveled up! They are now Level " + heroLevel + ".\n___________________________________";
             System.out.println("\nCongratulations! You have Leveled Up! You are now Level " + heroLevel + "!");
             allIncreases += heroSkills.checkHeroLevel(heroLevel);
@@ -285,44 +285,45 @@ public class StatIncrease
             allIncreases += ally.checkAllyLevel(heroLevel);
 
             //Ally growths are stronger than the Hero's since they cannot increase their stats via shop.
+            //...Until version 1.7, that is. But I'll leave this be.
             if(rollStat(allyChanceMaxHP))
             {
-                randomNum = rand.nextInt(6) + 1; //Max HP can increase by 10 - 60.
+                randomNum = rand.nextInt(6) + 4; //Max HP can increase by 40 - 100.
                 ally.addMaxHP(randomNum * 10);
                 System.out.println("- Zacharias's Max HP increased by " + (randomNum * 10) + "!");
                 allIncreases += "\n - Zacharias's Max HP increased by " + (randomNum * 10) + "!";
             }
             if(rollStat(allyChanceConstitution))
             {
-                randomNum = rand.nextInt(7) + 1; //Constitution can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Constitution can increase by 4-9.
                 ally.addConstitution(randomNum);
                 System.out.println("- Zacharias's Constitution increased by " + randomNum + "!");
                 allIncreases += "\n - Zacharias's Consitution increased by " + randomNum + "!";
             }
             if(rollStat(allyChanceAffinity))
             {
-                randomNum = rand.nextInt(7) + 1; //Affinity can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Affinity can increase by 4-9.
                 ally.addAffinity(randomNum);
                 System.out.println("- Zacharias's Affinity increased by " + randomNum + "!");
                 allIncreases += "\n - Zacharias's Affinity increased by " + randomNum + "!";
             }
             if(rollStat(allyChanceArmor))
             {
-                randomNum = rand.nextInt(7) + 1; //Armor can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Armor can increase by 4-9.
                 ally.addArmor(randomNum);
                 System.out.println("- Zacharias's Armor increased by " + randomNum + "!");
                 allIncreases += "\n - Zacharias's Armor increased by " + randomNum + "!";
             }
             if(rollStat(allyChanceResistance))
             {
-                randomNum = rand.nextInt(7) + 1; //Resistance can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Resistance can increase by 4-9.
                 ally.addResistance(randomNum);
                 System.out.println("- Zacharias's Resistance increased by " + randomNum + "!");
                 allIncreases += "\n - Zacharias's Resistance increased by " + randomNum + "!";
             }
             if(rollStat(allyChanceSpeed))
             {
-                randomNum = rand.nextInt(7) + 1; //Speed can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Speed can increase by 4-9.
                 ally.addSpeed(randomNum);
                 System.out.println("- Zacharias's Speed increased by " + randomNum + "!");
                 allIncreases += "\n - Zacharias's Speed increased by " + randomNum + "!";
@@ -336,7 +337,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceMaxHP))
             {
-                randomNum = rand.nextInt(6) + 1; //Max HP can increase by 10 - 60.
+                randomNum = rand.nextInt(5) + 3; //Max HP can increase by 30 - 80.
                 if(ally2 != null)
                 {
                     ally2.addMaxHP(randomNum * 10);
@@ -350,7 +351,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceConstitution))
             {
-                randomNum = rand.nextInt(7) + 1; //Constitution can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Constitution can increase by 4-9.
                 if(ally2 != null)
                 {
                     ally2.addConstitution(randomNum);
@@ -364,7 +365,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceAffinity))
             {
-                randomNum = rand.nextInt(7) + 1; //Affinity can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Affinity can increase by 4-9.
                 if(ally2 != null)
                 {
                     ally2.addAffinity(randomNum);
@@ -378,7 +379,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceArmor))
             {
-                randomNum = rand.nextInt(7) + 1; //Armor can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Armor can increase by 4-9.
                 if(ally2 != null)
                 {
                     ally2.addArmor(randomNum);
@@ -392,7 +393,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceResistance))
             {
-                randomNum = rand.nextInt(7) + 1; //Resistance can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Resistance can increase by 4-9.
                 if(ally2 != null)
                 {
                     ally.addResistance(randomNum);
@@ -406,7 +407,7 @@ public class StatIncrease
             }
             if(rollStat(ally2ChanceSpeed))
             {
-                randomNum = rand.nextInt(7) + 1; //Speed can increase by 1-7.
+                randomNum = rand.nextInt(5) + 4; //Speed can increase by 4-9.
                 if(ally2 != null)
                 {
                     ally.addAffinity(randomNum);

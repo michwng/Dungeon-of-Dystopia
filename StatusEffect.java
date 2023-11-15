@@ -169,10 +169,10 @@ public class StatusEffect
      * 
      * Date created: November 3, 2020
      * 
-     * @param target
-     * @param amount
-     * @param chance
-     * @param turns
+     * @param target - the exact name of the character to be poisoned.
+     * @param amount - amount of damage the poison will deal every turn.
+     * @param chance - change to incur effect on target.
+     * @param turns - amount of turns the effect will last.
      * @return true (if successful), false (if not successful)
      */
     public boolean poison(String target, int amount, int chance, int turns)
@@ -1017,7 +1017,7 @@ public class StatusEffect
             }
 
             if(heroStatusEffect.equalsIgnoreCase("Poisoned"))
-            {
+            { 
                 System.out.println(heroName + " took " + heroEffectEfficacy + "HP of damage from Poison!");
                 heroStats.addHP(-heroEffectEfficacy);
                 if(heroStats.getHP() < 0)
@@ -1027,9 +1027,11 @@ public class StatusEffect
 
                 if(heroEffectLength == 0)
                 {
+                    //neccessary because we're about to clear the effect.
+                    int tempNum = heroEffectEfficacy;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
-                    return heroName + " took " + heroEffectEfficacy + "HP of damage from Poison! \n" + heroName + "'s HP is now: " + heroStats.getHP() + "HP / " + heroStats.getMaxHP() + "HP.\n" + heroName + " has recovered from Poison.";
+                    return heroName + " took " + tempNum + "HP of damage from Poison! \n" + heroName + "'s HP is now: " + heroStats.getHP() + "HP / " + heroStats.getMaxHP() + "HP.\n" + heroName + " has recovered from Poison.";
                 }
                 else
                 {
@@ -1047,9 +1049,11 @@ public class StatusEffect
                 
                 if(heroEffectLength == 0)
                 {
+                    //neccessary because we're about to clear the effect.
+                    int tempNum = heroEffectEfficacy;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
-                    return heroName + " took " + heroEffectEfficacy + "HP of damage from Bleeding! \n" + heroName + "'s HP is now: " + heroStats.getHP() + "HP / " + heroStats.getMaxHP() + "HP.\n" + heroName + " has recovered from Bleeding.";
+                    return heroName + " took " + tempNum + "HP of damage from Bleeding! \n" + heroName + "'s HP is now: " + heroStats.getHP() + "HP / " + heroStats.getMaxHP() + "HP.\n" + heroName + " has recovered from Bleeding.";
                 }
                 else
                 {
@@ -1064,9 +1068,11 @@ public class StatusEffect
                 }
                 else
                 {
+                    //Necessary because we're about the clear the hero's status effect.
+                    String tempEffect = heroStatusEffect;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
-                    return heroName + " has recovered from " + heroStatusEffect + ".\n";
+                    return heroName + " has recovered from " + tempEffect + ".\n";
                 }
             }
             else if(heroStatusEffect.equalsIgnoreCase("Headache"))
@@ -1077,9 +1083,11 @@ public class StatusEffect
                 }
                 else
                 {
+                    //Necessary because we're about the clear the hero's status effect.
+                    String tempEffect = heroStatusEffect;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
-                    return heroName + " has recovered from " + heroStatusEffect + ".\n";
+                    return heroName + " has recovered from " + tempEffect + ".\n";
                 }
             }
             else if(heroStatusEffect.equalsIgnoreCase("Broken Armor"))
@@ -1103,9 +1111,11 @@ public class StatusEffect
                 }
                 else
                 {
+                    //Necessary because we're about the clear the hero's status effect.
+                    String tempEffect = heroStatusEffect;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
-                    return heroName + " has recovered from " + heroStatusEffect + ".\n";
+                    return heroName + " has recovered from " + tempEffect + ".\n";
                 }
             }
             //This includes other status effects not included above like immobilized, sundered, and pacified. (Note the ! at the beginning.)
@@ -1121,6 +1131,11 @@ public class StatusEffect
                     String tempStatEffect = heroStatusEffect;
                     //clears status effects for the hero.
                     clearStatusEffects(heroName);
+                    
+                    if(tempStatEffect.equals("Frozen") || tempStatEffect.equals("Stunned"))
+                    {
+                        return heroName + " will be able to act in their next turn.";
+                    }
                     return heroName + " has recovered from being " + tempStatEffect + ".\n";
                 }
             }
@@ -1144,9 +1159,11 @@ public class StatusEffect
 
                 if(allyEffectLength == 0)
                 {
+                    //neccessary because we're about to clear the effect.
+                    int tempNum = allyEffectEfficacy;
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " took " + allyEffectEfficacy + "HP of damage from Poison! \n" + allyName + "'s HP is now: " + ally.getHP() + "HP / " + ally.getMaxHP() + "HP.\n" + allyName + " has recovered from Poison.";
+                    return allyName + " took " + tempNum + "HP of damage from Poison! \n" + allyName + "'s HP is now: " + ally.getHP() + "HP / " + ally.getMaxHP() + "HP.\n" + allyName + " has recovered from Poison.";
                 }
                 else
                 {
@@ -1164,9 +1181,11 @@ public class StatusEffect
 
                 if(allyEffectLength == 0)
                 {
+                    //neccessary because we're about to clear the effect.
+                    int tempNum = allyEffectEfficacy;
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " took " + allyEffectEfficacy + "HP of damage from Bleeding! \n" + allyName + "'s HP is now: " + ally.getHP() + "HP / " + ally.getMaxHP() + "HP.\n" + allyName + " has recovered from Bleeding.";
+                    return allyName + " took " + tempNum + "HP of damage from Bleeding! \n" + allyName + "'s HP is now: " + ally.getHP() + "HP / " + ally.getMaxHP() + "HP.\n" + allyName + " has recovered from Bleeding.";
                 }
                 else
                 {
@@ -1183,7 +1202,7 @@ public class StatusEffect
                 {
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " has recovered from " + allyStatusEffect + ".\n";
+                    return allyName + " has recovered from Reduced HP.\n";
                 }
             }
             else if(allyStatusEffect.equalsIgnoreCase("Headache"))
@@ -1196,7 +1215,7 @@ public class StatusEffect
                 {
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " has recovered from " + allyStatusEffect + ".\n";
+                    return allyName + " has recovered from their Headache.\n";
                 }
             }
             else if(allyStatusEffect.equalsIgnoreCase("Broken Armor"))
@@ -1209,7 +1228,7 @@ public class StatusEffect
                 {
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " has recovered from " + allyStatusEffect + ".\n";
+                    return allyName + " has recovered from Broken Armor.\n";
                 }
             }
             else if(allyStatusEffect.equalsIgnoreCase("Mental Collapse") || allyStatusEffect.equalsIgnoreCase("Submission"))
@@ -1222,7 +1241,7 @@ public class StatusEffect
                 {
                     //clears ally status effects.
                     clearStatusEffects(allyName);
-                    return allyName + " has recovered from " + allyStatusEffect + ".\n";
+                    return allyName + " has recovered from Submission.\n";
                 }
             }
             //This includes other status effects not included above like immobilized, sundered, and pacified. (Note the ! at the beginning.)
@@ -1238,6 +1257,11 @@ public class StatusEffect
                     String tempStatEffect = allyStatusEffect;
                     //clears ally status effects.
                     clearStatusEffects(allyName);
+                    
+                    if(tempStatEffect.equals("Frozen") || tempStatEffect.equals("Stunned"))
+                    {
+                        return allyName + " will be able to act in their next turn.";
+                    }
                     return allyName + " has recovered from being " + tempStatEffect + ".\n";
                 }
             } 
@@ -1252,7 +1276,7 @@ public class StatusEffect
 
             if(enemyStatusEffect.equalsIgnoreCase("Poisoned"))
             {
-                System.out.println("The Enemy took " + enemyEffectEfficacy + "HP of damage from Poison!");
+                System.out.println(enemyName + " took " + enemyEffectEfficacy + "HP of damage from Poison!");
                 enemyStats.addEnemyHP(-enemyEffectEfficacy);
                 if(enemyStats.getEnemyHP() < 0)
                 {
@@ -1261,9 +1285,11 @@ public class StatusEffect
 
                 if(enemyEffectLength == 0)
                 {
+                    //necessary because we're about to set enemyEffectEfficacy to 0.
+                    int tempInt = enemyEffectEfficacy;
                     //clear enemy status effects.
                     clearStatusEffects(enemyName);
-                    return enemyName + " took " + enemyEffectEfficacy + "HP of damage from Poison! \n" + enemyName + "'s HP is now: " + enemyStats.getEnemyHP() + "HP / " + enemyStats.getEnemyMaxHP() + "HP.\n" + enemyName + " has recovered from Poison.";
+                    return enemyName + " took " + tempInt + "HP of damage from Poison! \n" + enemyName + "'s HP is now: " + enemyStats.getEnemyHP() + "HP / " + enemyStats.getEnemyMaxHP() + "HP.\n" + enemyName + " has recovered from Poison.";
                 }
                 else
                 {
@@ -1272,7 +1298,7 @@ public class StatusEffect
             }
             else if(enemyStatusEffect.equalsIgnoreCase("Bleeding"))
             {
-                System.out.println("The Enemy took " + enemyEffectEfficacy + "HP of damage from Bleeding!");
+                System.out.println(enemyName + " took " + enemyEffectEfficacy + "HP of damage from Bleeding!");
                 enemyStats.addEnemyHP(-enemyEffectEfficacy);
                 if(enemyStats.getEnemyHP() < 0)
                 {
@@ -1281,9 +1307,11 @@ public class StatusEffect
 
                 if(enemyEffectLength == 0)
                 {
+                    //necessary because we're about to set enemyEffectEfficacy to 0.
+                    int tempInt = enemyEffectEfficacy;
                     //clear enemy status effects.
                     clearStatusEffects(enemyName);
-                    return enemyName + " took " + enemyEffectEfficacy + "HP of damage from Bleeding! \n" + enemyName + "'s HP is now: " + enemyStats.getEnemyHP() + "HP / " + enemyStats.getEnemyMaxHP() + "HP.\n" + enemyName + " has recovered from Bleeding.";
+                    return enemyName + " took " + tempInt + "HP of damage from Bleeding! \n" + enemyName + "'s HP is now: " + enemyStats.getEnemyHP() + "HP / " + enemyStats.getEnemyMaxHP() + "HP.\n" + enemyName + " has recovered from Bleeding.";
                 }
                 else
                 {
@@ -1299,9 +1327,11 @@ public class StatusEffect
                 }
                 else
                 {
+                    //necessary because we're about to clear the enemy's status effect.
+                    String tempEffect = enemyStatusEffect;
                     //clear enemy status effects.
                     clearStatusEffects(enemyName);
-                    return enemyName + " has recovered from " + enemyStatusEffect + ".\n";
+                    return enemyName + " has recovered from " + tempEffect + ".\n";
                 }
             }
             else if(enemyStatusEffect.equalsIgnoreCase("Headache"))
@@ -1312,9 +1342,11 @@ public class StatusEffect
                 }
                 else
                 {
+                    //necessary because we're about to clear the enemy's status effect.
+                    String tempEffect = enemyStatusEffect;
                     //clear enemy status effects.
                     clearStatusEffects(enemyName);
-                    return enemyName + " has recovered from " + enemyStatusEffect + ".\n";
+                    return enemyName + " has recovered from " + tempEffect + ".\n";
                 }
             }
             //This includes other status effects not included above like pacified, silenced, and weakened. (Note the ! at the beginning.)
@@ -1327,9 +1359,14 @@ public class StatusEffect
                 else
                 {
                     //Needed to show what the enemy has recovered from (after clearing enemy's status effects).
-                    String tempStatEffect = heroStatusEffect;
+                    String tempStatEffect = enemyStatusEffect;
                     //clear enemy status effects.
                     clearStatusEffects(enemyName);
+                    
+                    if(tempStatEffect.equals("Frozen") || tempStatEffect.equals("Stunned"))
+                    {
+                        return enemyName + " will be able to act in their next turn.";
+                    }
                     return enemyName + " has recovered from being " + tempStatEffect + ".\n";
                 }
             }
@@ -1605,13 +1642,13 @@ public class StatusEffect
      */
     public String getAllStatusEffects()
     {
-        String message = "Hero\n--------\n";
+        String message = heroName + "\n--------\n";
         message += "Hero Status Effect: " + heroStatusEffect;
         message += "\nStatus Effect Description: " + heroStatusEffectDescription;
         message += "\nStatus Effect Strength: " + heroEffectEfficacy;
         message += "\nStatus Effect Length: " + heroEffectLength;
 
-        message += "\n\nEnemy\n--------\n";
+        message += "\n\n" + enemyName + "\n--------\n";
         message += "Enemy Status Effect: " + enemyStatusEffect;
         message += "\nStatus Effect Description: " + enemyStatusEffectDescription;
         message += "\nStatus Effect Strength: " + enemyEffectEfficacy;
@@ -1619,7 +1656,7 @@ public class StatusEffect
 
         if(ally != null)
         {
-            message += "\n\nAlly\n--------\n";
+            message += "\n\n" + allyName + "\n--------\n";
             message += "Ally Status Effect: " + allyStatusEffect;
             message += "\nStatus Effect Description: " + allyStatusEffectDescription;
             message += "\nStatus Effect Strength: " + allyEffectEfficacy;

@@ -121,10 +121,17 @@ public class Map {
      */
     public void rushLocation() {
         for (int i = 0; i < 9; i++) {
-            getScenario();
+            
             if(area % 10 == 0)
             {
+                String[] listChoices = {"OK"};
+                JOptionPane.showOptionDialog(null, "You've arrived at a Boss Floor. \nTo proceed, please select New Scenario.", "Rush Location Disabled", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, listChoices, listChoices[0]);
+                System.out.println("You've arrived at a Boss Floor. \nTo proceed, please select New Scenario.");
                 break;
+            }
+            else 
+            {
+                getScenario();
             }
         }
     }
@@ -292,6 +299,7 @@ public class Map {
             }
             else if (area == 50)
             {
+                //Note: It is possible to reach the 50th floor without ever discovering Anthiera, but it is highly unlikely.
                 JOptionPane.showMessageDialog(null, "Upon advancing the 50th floor, " + heroStats.getHeroName() + " and " + ally.getAllyName() + " are stopped by a magical barrier.", "Pre-Boss Battle", JOptionPane.INFORMATION_MESSAGE);
                 JOptionPane.showMessageDialog(null, "\"Welcome to the Leader's Lair.\" an unknown voice calls. \nThey appear directly in front of them not soon after. \n\"You have caused too much of a stir here,\" he says. \"Let it be known that your life ends here under my hands. Any last words?\"", "Pre-Boss Battle", JOptionPane.INFORMATION_MESSAGE);
                 JOptionPane.showMessageDialog(null, "Anthiera steps up. \n\"I'd recognize that voice from anywhere,\" she says. \n\"Robertz, I will avenge my fallen comrades by taking your life!\"", "Pre-Boss Battle", JOptionPane.INFORMATION_MESSAGE);
@@ -596,11 +604,12 @@ public class Map {
                     message += heroStats.getHeroName() + " could not afford to give $200 of financial support.";
                     message += "\nAs " + heroStats.getHeroName() + " turns away, the wall suddenly breaks down, revealing a man wearing simple clothes, with socks, sandals, mittens, and white hair.";
                     message += "\n\"I... need my financial support...\" he says, drooling a puddle on the floor.";
-                    message += "\nThe man lunges at" + heroStats.getHeroName() + ", who dodges the attack. It's safe to assume that this man wants to do harm.";
+                    message += "\nThe man lunges at " + heroStats.getHeroName() + ", who dodges the attack. It's safe to assume that this man wants to do harm.";
 
                     String[] battleOption = {"BEGIN BATTLE"};
                     JOptionPane.showOptionDialog(null, message, "No Financial Support", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, battleOption, battleOption[0]);
 
+                    Driver.stopAudio();
                     Enemy sandles = new Enemy("Burny Sandles", getArea());
                     Battle bat = new Battle(heroStats, heroSkills, ally, sandles);
                     bat.getResult(increaseStat);

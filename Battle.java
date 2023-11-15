@@ -591,7 +591,7 @@ public class Battle
             //Proc the status effect of the enemy's skill.
             if (skillStatusEffect.equals("Drain")) 
             {
-                int drainAmount = statusEffect.drain("Enemy", afterSkillDamage, skillStatusEffectProc);
+                int drainAmount = statusEffect.drain(enemyName, afterSkillDamage, skillStatusEffectProc);
                 System.out.println(enemyName + " drained " + drainAmount + "HP from " + heroName + "!");
                 message += "\n\n" + enemyName + " drained " + drainAmount + "HP from " + heroName + "!";
                 message += "\n" + enemyName + " now has " + enemy.getEnemyHP() + "HP / " + enemy.getEnemyMaxHP() + "HP.";
@@ -606,7 +606,7 @@ public class Battle
             //Proc the status effect of the enemy's skill.
             if (skillStatusEffect.equals("Drain")) 
             {
-                int drainAmount = statusEffect.drain("Enemy", afterSkillDamage, skillStatusEffectProc);
+                int drainAmount = statusEffect.drain(enemyName, afterSkillDamage, skillStatusEffectProc);
                 System.out.println(enemyName + " drained " + drainAmount + "HP from " + allyName + "!");
                 message += "\n\n" + enemyName + " drained " + drainAmount + "HP from " + allyName + "!";
                 message += "\n" + enemyName + " now has " + enemy.getEnemyHP() + "HP / " + enemy.getEnemyMaxHP() + "HP.";
@@ -620,7 +620,7 @@ public class Battle
         //if there is only 1 turn left of the status effect.
         if(!effectIterated)
         {
-            message += statusEffect.iterateTurn(enemyName);
+            message += "\n" + statusEffect.iterateTurn(enemyName);
             effectIterated = true;
         }
 
@@ -910,7 +910,7 @@ public class Battle
                     // Status Effect Proc
                     // Method calls ask for: Target, Efficacy, Proc Chance, Length.
                     if (skillStatusEffect.equals("Drain")) {
-                        int drainAmount = statusEffect.drain("Hero", skillDamage, skillStatusEffectProc);
+                        int drainAmount = statusEffect.drain(heroName, skillDamage, skillStatusEffectProc);
                         {
                             System.out.println(heroName + " drained " + drainAmount + "HP from " + enemyName + "!");
                             message += "\n\n" + heroName + " drained " + drainAmount + "HP from " + enemyName + "!";
@@ -925,7 +925,7 @@ public class Battle
                     //if there is only 1 turn left of the status effect.
                     if(!effectIterated)
                     {
-                        message += statusEffect.iterateTurn(heroName);
+                        message += "\n" + statusEffect.iterateTurn(heroName);
                         effectIterated = true;
                     }
 
@@ -944,8 +944,8 @@ public class Battle
     {
         if (statusEffect.getAllyStatusEffect().equalsIgnoreCase("Frozen") || statusEffect.getAllyStatusEffect().equalsIgnoreCase("Stunned"))
         {
-            JOptionPane.showMessageDialog(null, ally.getAllyName() + " is " + statusEffect.getAllyStatusEffect() + "!\nThey cannot move this turn.", statusEffect.getAllyStatusEffect(), JOptionPane.INFORMATION_MESSAGE);
-            statusEffect.iterateTurn(allyName);
+            JOptionPane.showMessageDialog(null, ally.getAllyName() + " is " + statusEffect.getAllyStatusEffect() + "!\nThey cannot move this turn."
+                    + statusEffect.iterateTurn(allyName), statusEffect.getAllyStatusEffect(), JOptionPane.INFORMATION_MESSAGE);
             if(heroStats.getHP() > 0)
             {
                 battleTurn = "Hero";
@@ -1097,7 +1097,7 @@ public class Battle
         }
 
         if (skillStatusEffect.equals("Drain")) {
-            int drainAmount = statusEffect.drain("Ally", skillDamage, skillStatusEffectProc);
+            int drainAmount = statusEffect.drain(allyName, skillDamage, skillStatusEffectProc);
             {
                 System.out.println(allyName + " drained " + drainAmount + "HP from " + enemyName + "!");
                 message += "\n" + allyName + " drained " + drainAmount + "HP from " + enemyName + "!";
@@ -1162,42 +1162,42 @@ public class Battle
         }
         if (effect.equals("Bleed")) {
             if (!statusEffect.bleed(who, efficacy, proc, length)) {
-                System.out.println(caster + " failed to lacerate " + who + "!");
-                message = "\n" + caster + " failed to lacerate " + who + "!";
+                System.out.println(caster + " failed to lacerate " + who + "!\n");
+                message = "\n" + caster + " failed to lacerate " + who + "!\n";
             }
             else
             {
-                message = "\n" + caster + " lacerated " + who + "!";
+                message = "\n" + caster + " lacerated " + who + "!\n";
             }
         }
         if (effect.equals("Poison")) {
             if (!statusEffect.poison(who, efficacy, proc, length)) {
-                System.out.println(caster + " failed to Poison " + who + "!");
-                message = "\n" + caster + " failed to Poison " + who + "!";
+                System.out.println(caster + " failed to Poison " + who + "!\n");
+                message = "\n" + caster + " failed to Poison " + who + "!\n";
             }
             else
             {
-                message = "\n" + caster + " poisoned " + who + "!";
+                message = "\n" + caster + " poisoned " + who + "!\n";
             }
         }
         if (effect.equals("Weaken")) {
             if (!statusEffect.weaken(who, efficacy, proc, length)) {
-                System.out.println(caster + " failed to Weaken " + who + "!");
-                message = "\n" + caster + " failed to Weaken " + who + "!";
+                System.out.println(caster + " failed to Weaken " + who + "!\n");
+                message = "\n" + caster + " failed to Weaken " + who + "!\n";
             }
             else
             {
-                message = "\n" + caster + " weakened " + who + "!";
+                message = "\n" + caster + " weakened " + who + "!\n";
             }
         }
         if (effect.equals("Pacify")) {
             if (!statusEffect.pacify(who, proc, length)) {
-                System.out.println(caster + " failed to Pacify " + who + "!");
-                message = "\n" + caster + " failed to Pacify " + who + "!";
+                System.out.println(caster + " failed to Pacify " + who + "!\n");
+                message = "\n" + caster + " failed to Pacify " + who + "!\n";
             }
             else
             {
-                message = "\n" + caster + " pacified " + who + "!";
+                message = "\n" + caster + " pacified " + who + "!\n";
             }
         }
         if (effect.equals("Headache")) {
@@ -1207,37 +1207,38 @@ public class Battle
             }
             else
             {
-                message = caster + " gave a headache to " + who + "!";
+                message = caster + " gave a headache to " + who + "!\n";
             }
         }
         if (effect.equals("Silence")) {
             if (!statusEffect.silence(who, proc, length)) {
-                System.out.println(caster + " failed to Silence " + who + "!");
-                message = caster + " failed to Silence " + who + "!";
+                System.out.println(caster + " failed to Silence " + who + "!\\n" + //
+                        "");
+                message = caster + " failed to Silence " + who + "!\n";
             }
             else
             {
-                message = caster + " silenced " + who + "!";
+                message = caster + " silenced " + who + "!\n";
             }
         }
         if (effect.equals("ArmorBreak")) {
             if (!statusEffect.armorBreak(who, efficacy, proc, length)) {
-                System.out.println(who + " resisted Armor Break!");
-                message = who + " resisted Armor Break!";
+                System.out.println(who + " resisted Armor Break!\n");
+                message = who + " resisted Armor Break!\n";
             }
             else
             {
-                message = caster + " broke " + who + "'s armor!";
+                message = caster + " broke " + who + "'s armor!\n";
             }
         }
         if (effect.equals("Sunder")) {
             if (!statusEffect.sunder(who, proc, length)) {
-                System.out.println(caster + " failed to Sunder " + who + "!");
-                message = caster + " failed to Sunder " + who + "!";
+                System.out.println(caster + " failed to Sunder " + who + "!\n");
+                message = caster + " failed to Sunder " + who + "!\n";
             }
             else
             {
-                message = caster + " sundered " + who + "!";
+                message = caster + " sundered " + who + "!\n";
             }
         }
         if (effect.equals("MentalCollapse")) {
@@ -1262,42 +1263,42 @@ public class Battle
         }
         if (effect.equals("Cripple")) {
             if (!statusEffect.cripple(who, efficacy, proc, length)) {
-                System.out.println(caster + " failed to Cripple " + who + "!");
-                message = caster + " failed to Cripple " + who + "!";
+                System.out.println(caster + " failed to Cripple " + who + "!\n");
+                message = caster + " failed to Cripple " + who + "!\n";
             }
             else
             {
-                message = caster + " crippled " + who + "!";
+                message = caster + " crippled " + who + "!\n";
             }
         }
         if (effect.equals("Immobilized")) {
             if (!statusEffect.immobilize(who, proc, length)) {
-                System.out.println(caster + " failed to Immobilize " + who + "!");
-                message = caster + " failed to Immobilize " + who + "!";
+                System.out.println(caster + " failed to Immobilize " + who + "!\n");
+                message = caster + " failed to Immobilize " + who + "!\n";
             }
             else
             {
-                message = caster + " immobilized " + who + "!";
+                message = caster + " immobilized " + who + "!\n";
             }
         }
         if (effect.equals("Stun")) {
             if (!statusEffect.stun(who, proc, length)) {
-                System.out.println(caster + " failed to Stun " + who + "!");
-                message = caster + " failed to Stun " + who + "!";
+                System.out.println(caster + " failed to Stun " + who + "!\n");
+                message = caster + " failed to Stun " + who + "!\n";
             }
             else
             {
-                message = caster + " stunned " + who + "!";
+                message = caster + " stunned " + who + "!\n";
             }
         }
         if (effect.equals("Freeze")) {
             if (!statusEffect.freeze(who, proc, length)) {
-                System.out.println(caster + " failed to Freeze " + who + "!");
-                message = caster + " failed to Freeze " + who + "!";
+                System.out.println(caster + " failed to Freeze " + who + "!\n");
+                message = caster + " failed to Freeze " + who + "!\n";
             }
             else
             {
-                message = caster + " froze " + who + "!";
+                message = caster + " froze " + who + "!\n";
             }
         }
         return message;
@@ -1488,7 +1489,7 @@ public class Battle
         tips.add("Tip 9: Using Mend will be a lifesaver in certain situations.\nBe sure to keep your Ally alive by mending them.\nThey cannot fight when fainted.");
         tips.add("Tip 10: Ultimate Skills for both the Hero and Allies unlock at level 15.\nThey deal massive amounts of damage.");
         tips.add("Tip 11: Stun and Freeze are match changers! Utilize them by using 'Shield Bash' or 'Ice Spike'!");
-        tips.add("Tip 12: Different Allies provide different skills and status effects.\nUtilize tham and learn more about what they can do.");
+        tips.add("Tip 12: Different Allies provide different skills and status effects.\nUtilize them and learn more about what they can do.");
         tips.add("Tip 13: Status Effects do not stack, but can be replaced or have their length reset! \nBe careful when using other skills that can replace more useful status effects.");
         tips.add("Tip 14: Speed decides who will go first in a battle. \nThose with higher speed will go first.");
         tips.add("Tip 15: Different enemies will have different skills. \nLearn from each skill and plan around their effects!");
